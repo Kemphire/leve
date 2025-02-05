@@ -17,6 +17,7 @@ dependencies = []
 
 [project.urls]
 Homepage = "https://github.com/kemphire/leve"
+Repository = "https://github.com/kemphire/leve"
 Issues = "https://github.com/kemphire/leve/issues"
 
 [build-system]
