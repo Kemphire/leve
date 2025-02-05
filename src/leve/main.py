@@ -16,9 +16,10 @@ else:
     def dump_cache(*args): ...
 
 
-def lev_impl_cache(
+def _lev_impl_cache(
     s1: str, s2: str, n1: int, n2: int, cache: List[List[Optional[int]]]
 ) -> int:
+    """Recursive way of doing it, but with custom cache"""
     if cache[n1][n2] is not None:
         return cache[n1][n2]
     if n1 == 0:
@@ -30,35 +31,38 @@ def lev_impl_cache(
         dump_cache(cache)
         return cache[n1][n2]
     if s1[n1 - 1] == s2[n2 - 1]:
-        cache[n1][n2] = lev_impl_cache(s1, s2, n1 - 1, n2 - 1, cache)
+        cache[n1][n2] = _lev_impl_cache(s1, s2, n1 - 1, n2 - 1, cache)
         dump_cache(cache)
         return cache[n1][n2]
 
     cache[n1][n2] = 1 + min(
-        lev_impl_cache(s1, s2, n1 - 1, n2, cache),  # added
-        lev_impl_cache(s1, s2, n1, n2 - 1, cache),  # removed
-        lev_impl_cache(s1, s2, n1 - 1, n2 - 1, cache),  # replaced
+        _lev_impl_cache(s1, s2, n1 - 1, n2, cache),  # added
+        _lev_impl_cache(s1, s2, n1, n2 - 1, cache),  # removed
+        _lev_impl_cache(s1, s2, n1 - 1, n2 - 1, cache),  # replaced
     )
     dump_cache(cache)
     return cache[n1][n2]
 
 
 @functools.lru_cache()
-def lev_impl(s1: str, s2: str, n1: int, n2: int) -> int:
+def _lev_impl(s1: str, s2: str, n1: int, n2: int) -> int:
+    """
+    Recursive way of doing it, with builtin python functools cache
+    """
     if n1 == 0:
         return n2
     if n2 == 0:
         return n1
     if s1[n1 - 1] == s2[n2 - 1]:
-        return lev_impl(s1, s2, n1 - 1, n2 - 1)
+        return _lev_impl(s1, s2, n1 - 1, n2 - 1)
     return 1 + min(
-        lev_impl(s1, s2, n1 - 1, n2),  # added
-        lev_impl(s1, s2, n1, n2 - 1),  # removed
-        lev_impl(s1, s2, n1 - 1, n2 - 1),  # replaced
+        _lev_impl(s1, s2, n1 - 1, n2),  # added
+        _lev_impl(s1, s2, n1, n2 - 1),  # removed
+        _lev_impl(s1, s2, n1 - 1, n2 - 1),  # replaced
     )
 
 
-def lev_impl_iter(s1: str, s2: str) -> int:
+def _lev_impl_iter(s1: str, s2: str) -> int:
     n1, n2 = len(s1), len(s2)
     cache: List[List[Optional[int]]] = [[None] * (n2 + 1) for _ in range(n1 + 1)]
     for n2 in range(len(s2) + 1):
@@ -88,4 +92,4 @@ def lev_impl_iter(s1: str, s2: str) -> int:
 
 def edit_distance(s1: str, s2: str) -> int:
     """Returs the lavenstein edit distance between two strings"""
-    return lev_impl_iter(s1, s2)
+    return _lev_impl_iter(s1, s2)

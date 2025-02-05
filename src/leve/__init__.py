@@ -1,4 +1,4 @@
-from .main import edit_distance
+from .main import *
 from .utils import *
 
 
