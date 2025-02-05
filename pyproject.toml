@@ -3,9 +3,15 @@ name = "leve"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-authors = [
-    { name = "kartikey Shahi", email = "kartikeyshahi@hotmail.com" }
+authors = [{ name = "kartikey Shahi", email = "kartikeyshahi@hotmail.com" }]
+license = { file = "LICENSE" }
+keywords = ["levenshtein", "nlp", "string matching"]
+classifiers = [
+	"Programming Language :: Python :: 3",
+	"License :: OSI Approved :: MIT License",
+	"Operating System :: OS Independent",
 ]
+
 requires-python = ">=3.13"
 dependencies = []
 
